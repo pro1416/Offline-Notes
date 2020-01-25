@@ -6,7 +6,7 @@ Using this app one can store notes without connecting to internet.It includes im
 - Update
 - Delete
 
-Following are some screeshots of this application
+Following are some screenshots of this application
 
 ![view](https://user-images.githubusercontent.com/38250609/73119977-dafad900-3f8e-11ea-9d4e-8002411f707e.jpg)
 
