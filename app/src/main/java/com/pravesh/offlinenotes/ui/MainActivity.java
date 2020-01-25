@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
             noNotes.setVisibility(View.GONE);
             MyRecyclerAdapter adapter = new MyRecyclerAdapter(MainActivity.this, recyclerNotes);
             recyclerView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
 
         }
     }
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             dialog.dismiss();
-                            finish();
+                            showRecyclerViewOrNot();
 
 
                         }
