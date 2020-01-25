@@ -37,9 +37,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //binding views
         recyclerView = findViewById(R.id.recyclerView);
         btnAddNote = findViewById(R.id.addNote);
         noNotes = findViewById(R.id.noNotes);
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         databaseHelper = new DatabaseHelper(this);
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //setting adapter if data is present
     public void showRecyclerViewOrNot() {
         recyclerNotes = databaseHelper.getAllNotes();
         if (recyclerNotes.size() == 0) {
@@ -64,10 +67,12 @@ public class MainActivity extends AppCompatActivity {
             noNotes.setVisibility(View.GONE);
             MyRecyclerAdapter adapter = new MyRecyclerAdapter(MainActivity.this, recyclerNotes);
             recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
 
         }
     }
 
+    // adding data via dialog
     public void createAddNote() {
         builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.add_note_dialog, null);
@@ -86,11 +91,12 @@ public class MainActivity extends AppCompatActivity {
                     Note note = new Note(title, subtitle, content);
                     databaseHelper.addNote(note);
                     Snackbar.make(v, "Added", Snackbar.LENGTH_SHORT).show();
+                    // to delay dismiss operation in order to see SnackBar
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             dialog.dismiss();
-                            showRecyclerViewOrNot();
+                            finish();
 
 
                         }
@@ -102,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        // creating dialog
         builder.setView(view);
         dialog = builder.create();
         dialog.show();

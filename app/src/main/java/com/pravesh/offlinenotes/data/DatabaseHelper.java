@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private final Context context;
+    Context context;
 
+    //constructor
     public DatabaseHelper(@Nullable Context context) {
         super(context, Database.DATABASE_NAME, null, Database.DATABASE_VERSION);
         this.context = context;
@@ -46,7 +47,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(Database.COLUMN_SUBTITLE, note.getSubtitle());
         cv.put(Database.COLUMN_CONTENT, note.getContent());
         db.insert(Database.TABLE_NAME, null, cv);
-        db.close();
     }
 
 
@@ -59,10 +59,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
+                int id = cursor.getInt(cursor.getColumnIndex(Database.COLUMN_ID));
                 String title = cursor.getString(cursor.getColumnIndex(Database.COLUMN_TITLE));
                 String subtitle = cursor.getString(cursor.getColumnIndex(Database.COLUMN_SUBTITLE));
                 String content = cursor.getString(cursor.getColumnIndex(Database.COLUMN_CONTENT));
-                noteList.add(new Note(title, subtitle, content));
+                noteList.add(new Note(id, title, subtitle, content));
 
 
             } while (cursor.moveToNext());
@@ -78,12 +79,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(Database.COLUMN_SUBTITLE, note.getSubtitle());
         contentValues.put(Database.COLUMN_CONTENT, note.getContent());
         return db.update(Database.TABLE_NAME, contentValues,
-                Database.COLUMN_ID + "=? ", new String[]{String.valueOf(note.getId())});
+                Database.COLUMN_ID + " =?", new String[]{String.valueOf(note.getId())});
     }
 
     public void deleteNote(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(Database.TABLE_NAME, Database.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+        db.delete(Database.TABLE_NAME, Database.COLUMN_ID + " =?", new String[]{String.valueOf(id)});
         db.close();
     }
 }
